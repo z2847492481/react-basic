@@ -11,12 +11,24 @@ function App() {
     setItems((items) => items.filter((item) => item.id !== id));
   }
 
+  function handleUpdateItem(id) {
+    setItems((items) =>
+      items.map((item) =>
+        item.id === id ? { ...item, packed: !item.packed } : item
+      )
+    );
+  }
+
   return (
     <div className="app">
       <Logo />
       <From onAddItem={handleAddItem} />
-      <List items={items} onDeleteItem={handleDeleteItem} />
-      <Stats />
+      <List
+        items={items}
+        onDeleteItem={handleDeleteItem}
+        onUpdateItem={handleUpdateItem}
+      />
+      <Stats items={items} />
     </div>
   );
 }
@@ -64,21 +76,31 @@ function From({ onAddItem }) {
   );
 }
 
-function List({ items, onDeleteItem }) {
+function List({ items, onDeleteItem, onUpdateItem }) {
   return (
     <div className="list">
       <ul>
         {items.map((item) => (
-          <Item item={item} key={item.id} onDeleteItem={onDeleteItem} />
+          <Item
+            item={item}
+            key={item.id}
+            onDeleteItem={onDeleteItem}
+            onUpdateItem={onUpdateItem}
+          />
         ))}
       </ul>
     </div>
   );
 }
 
-function Item({ item, onDeleteItem }) {
+function Item({ item, onDeleteItem, onUpdateItem }) {
   return (
     <li>
+      <input
+        type="checkbox"
+        value={item.packed}
+        onChange={() => onUpdateItem(item.id)}
+      />
       <span style={item.packed ? { textDecoration: "line-through" } : {}}>
         {item.quantity} {item.description}
       </span>
@@ -87,10 +109,22 @@ function Item({ item, onDeleteItem }) {
   );
 }
 
-function Stats() {
+function Stats({ items }) {
+  if (!items.length) {
+    return (
+      <p className="stats">
+        <em>Let's add some item into your packing list! ✨</em>
+      </p>
+    );
+  }
+  const itemNum = items.length;
+  const packedItemNum = items.filter((item) => item.packed).length;
+  const packedItemPercentage = Math.round((packedItemNum / itemNum) * 100);
   return (
     <footer className="stats">
-      💼 You have X items on your list, and you already packed X (X%)
+      {packedItemPercentage === 100
+        ? "You have finish packed all items, Let's go to a trip!✌"
+        : `💼 You have ${itemNum} items on your list, and you already packed ${packedItemNum} (${packedItemPercentage}%)`}
     </footer>
   );
 }
