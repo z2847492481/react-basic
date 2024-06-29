@@ -57,7 +57,7 @@ export default function App() {
       <NavBar movies={movies}>
         <NumResults movies={movies} />
       </NavBar>
-      <Main />
+      <Main movies={movies} />
     </>
   );
 }
@@ -124,20 +124,26 @@ function MovieList({ movies }) {
       {isOpen1 && (
         <ul className="list">
           {movies?.map((movie) => (
-            <li key={movie.imdbID}>
-              <img src={movie.Poster} alt={`${movie.Title} poster`} />
-              <h3>{movie.Title}</h3>
-              <div>
-                <p>
-                  <span>🗓</span>
-                  <span>{movie.Year}</span>
-                </p>
-              </div>
-            </li>
+            <Movie movie={movie} key={movie.imdbID} />
           ))}
         </ul>
       )}
     </div>
+  );
+}
+
+function Movie({ movie }) {
+  return (
+    <li key={movie.imdbID}>
+      <img src={movie.Poster} alt={`${movie.Title} poster`} />
+      <h3>{movie.Title}</h3>
+      <div>
+        <p>
+          <span>🗓</span>
+          <span>{movie.Year}</span>
+        </p>
+      </div>
+    </li>
   );
 }
 
@@ -195,7 +201,7 @@ function WatchedList({ watched }) {
   return (
     <ul className="list">
       {watched.map((movie) => (
-        <WatchedMovie movie={movie} />
+        <WatchedMovie movie={movie} key={movie.imdbID} />
       ))}
     </ul>
   );
