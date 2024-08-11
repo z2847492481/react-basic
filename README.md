@@ -13,3 +13,14 @@ useMemo and useCallback are hooks that can be used to improve performance.
 2、improve app speed and responsiveness
 
 3、reduce bundle size
+
+
+# need review
+
+Section 11: How React Works Behind the Scenes
+
+Section 12: Effects and Data Fetching
+
+Section 17: React Router: Building Single-Page Applications (SPA)
+
+Section 19: Performance Optimization and Advanced useEffect
